@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".rxjavaforandroid.chapt2_newsarticle.RxJavaForAndroidNewsFeed">
+
+    <TextView
+        android:id="@+id/introText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Example combineLatest:" />
+
+    <TextView
+        android:id="@+id/firstTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/introText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="first"
+        android:inputType="text"/>
+    <TextView
+        android:id="@+id/secondTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/firstTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="second"
+        android:text="sometext"
+        android:inputType="text"/>
+    <TextView
+        android:id="@+id/thirdTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/secondTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="output"/>
+</android.support.constraint.ConstraintLayout>

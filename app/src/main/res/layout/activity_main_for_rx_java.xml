@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".rxjavaforandroid.MainActivityForRxJava">
+
+    <Button
+        android:id="@+id/my_own_observable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="My Own Observable"/>
+    <!--<Button-->
+        <!--android:id="@+id/newsarticle"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="News article"/>-->
+    <Button
+        android:id="@+id/disposables"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Disposables"/>
+    <Button
+        android:id="@+id/subjects"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Subjects"/>
+    <Button
+        android:id="@+id/filebrowser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="File Browser"/>
+    <Button
+        android:id="@+id/fb_coffee_break"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="File Browser - Coffee Break"/>
+    <Button
+        android:id="@+id/filebrowser_store"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="File Browser - Store"/>
+</LinearLayout>
