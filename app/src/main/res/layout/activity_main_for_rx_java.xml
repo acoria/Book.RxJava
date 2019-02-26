@@ -38,6 +38,11 @@
         android:layout_height="wrap_content"
         android:text="File Browser - Coffee Break"/>
     <Button
+        android:id="@+id/filebrowser_ministore"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="File Browser - MiniStore"/>
+    <Button
         android:id="@+id/filebrowser_store"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

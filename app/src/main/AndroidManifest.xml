@@ -24,6 +24,7 @@
         </activity>
         <activity android:name=".rxjavaforandroid.chapt6_fileBrowser.FileBrowserActivity" />
         <activity android:name=".rxjavaforandroid.chapt7_stores.FileBrowserActivityWithStore" />
+        <activity android:name=".rxjavaforandroid.chapt7_stores.first_mini_store.FileBrowserActivityWithMiniStore" />
         <activity android:name=".rxjavaforandroid.chapt5_subjects.SubjectsActivity" />
         <activity android:name=".rxjavaforandroid.chapt4_disposables.DisposablesActivity" />
         <activity android:name=".rxjavaforandroid.MyOwnObservableActivity" />

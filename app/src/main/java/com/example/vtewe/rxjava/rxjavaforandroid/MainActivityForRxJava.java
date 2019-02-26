@@ -10,6 +10,7 @@ import com.example.vtewe.rxjava.rxjavaforandroid.chapt6_fileBrowser.fb_CoffeeBre
 import com.example.vtewe.rxjava.rxjavaforandroid.chapt4_disposables.DisposablesActivity;
 import com.example.vtewe.rxjava.rxjavaforandroid.chapt5_subjects.SubjectsActivity;
 import com.example.vtewe.rxjava.rxjavaforandroid.chapt7_stores.FileBrowserActivityWithStore;
+import com.example.vtewe.rxjava.rxjavaforandroid.chapt7_stores.first_mini_store.FileBrowserActivityWithMiniStore;
 import com.jakewharton.rxbinding2.view.RxView;
 
 import io.reactivex.disposables.CompositeDisposable;
@@ -35,6 +36,8 @@ public class MainActivityForRxJava extends AppCompatActivity {
                 .subscribe(event -> startAnActivity(FileBrowserActivity.class)));
         compositeDisposable.add(RxView.clicks(findViewById(R.id.fb_coffee_break))
                 .subscribe(event -> startAnActivity(FB_CoffeeBreak.class)));
+        compositeDisposable.add(RxView.clicks(findViewById(R.id.filebrowser_ministore))
+                .subscribe(event -> startAnActivity(FileBrowserActivityWithMiniStore.class)));
         compositeDisposable.add(RxView.clicks(findViewById(R.id.filebrowser_store))
                 .subscribe(event -> startAnActivity(FileBrowserActivityWithStore.class)));
     }

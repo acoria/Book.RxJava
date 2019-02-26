@@ -1,4 +1,4 @@
-package com.example.vtewe.rxjava.rxjavaforandroid.chapt7_stores;
+package com.example.vtewe.rxjava.rxjavaforandroid.chapt7_stores.first_mini_store;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -23,14 +23,13 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
 
-public class FileBrowserActivityWithStore extends AppCompatActivity {
+public class FileBrowserActivityWithMiniStore extends AppCompatActivity {
 
-    final static String TAG = FileBrowserActivityWithStore.class.getSimpleName();
-    private static final String SHARED_PREFERENCES_NAME = "file_browser";
+    final static String TAG = FileBrowserActivityWithMiniStore.class.getSimpleName();
     ListView listView;
-    FileBrowserViewModelWithStore viewModel;
+    FileBrowserViewModelWithMiniStore viewModel;
     FileBrowserModel fileBrowserModel;
-    String defaultPath;
+    File rootFile;
     Observable<File> listItemClickObservable;
     Observable<Object> backButtonObservable;
     Observable<Object> rootButtonObservable;
@@ -41,6 +40,7 @@ public class FileBrowserActivityWithStore extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_file_browser);
         listView = findViewById(R.id.list_view);
+        rootFile = new File(Environment.getRootDirectory().getPath());
 
         setTitle("File Browser");
 
@@ -77,7 +77,7 @@ public class FileBrowserActivityWithStore extends AppCompatActivity {
                 viewModel.getFileListObservable()
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(this::updateList
-                                , e -> Log.e(TAG, "Error reading files", e))
+                                ,e -> Log.e(TAG, "Error reading files", e))
         );
     }
 
@@ -97,7 +97,7 @@ public class FileBrowserActivityWithStore extends AppCompatActivity {
                                 ((parent, view, position, id) -> {
                                     final File file = (File) view.getTag();
                                     Log.d(TAG, "Selected: " + file);
-                                    if (file.isDirectory()) {
+                                    if(file.isDirectory()){
                                         emitter.onNext(file);
                                     }
                                 })
@@ -108,22 +108,16 @@ public class FileBrowserActivityWithStore extends AppCompatActivity {
     }
 
     private void setupModel() {
-        defaultPath = Environment.getRootDirectory().getPath();
-//        defaultPath = Environment.getExternalStorageDirectory().getPath();
-
-        fileBrowserModel = new FileBrowserModel(
-                this::createFilesObservable,
-                defaultPath,
-                getSharedPreferences(SHARED_PREFERENCES_NAME, 0));
+        fileBrowserModel = new FileBrowserModel(rootFile, this::createFilesObservable);
     }
 
     private void setupViewModel() {
-        viewModel = new FileBrowserViewModelWithStore(
+        viewModel = new FileBrowserViewModelWithMiniStore(
                 fileBrowserModel,
                 listItemClickObservable,
                 backButtonObservable,
                 rootButtonObservable,
-                defaultPath
+                rootFile
         );
     }
 
@@ -131,11 +125,10 @@ public class FileBrowserActivityWithStore extends AppCompatActivity {
     List<File> getFiles(File dirOrFile) {
         List<File> fileList = new ArrayList<>();
         File[] files = dirOrFile.listFiles();
-        if (files != null) {
-            for (File file : files) {
-                if (!file.isHidden() && file.canRead()) {
-                    fileList.add(file);
-                }
+        if(files == null) return null;
+        for (File file : files) {
+            if (!file.isHidden() && file.canRead()) {
+                fileList.add(file);
             }
         }
         return fileList;
@@ -154,7 +147,6 @@ public class FileBrowserActivityWithStore extends AppCompatActivity {
             }
         });
     }
-
     private void updateList(List<File> files) {
         FileListAdapter fileListAdapter = new FileListAdapter(this, R.layout.array_adapter_textview, files);
         listView.setAdapter(fileListAdapter);

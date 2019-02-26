@@ -1,4 +1,4 @@
-package com.example.vtewe.rxjava.rxjavaforandroid.chapt7_stores;
+package com.example.vtewe.rxjava.rxjavaforandroid.chapt7_stores.first_mini_store;
 
 import android.util.Log;
 
@@ -9,28 +9,29 @@ import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.subjects.BehaviorSubject;
 
-public class FileBrowserViewModelWithStore {
+public class FileBrowserViewModelWithMiniStore {
 
-    final static String TAG = FileBrowserViewModelWithStore.class.getSimpleName();
+    final static String TAG = FileBrowserViewModelWithMiniStore.class.getSimpleName();
     private Observable<File> listItemClickObservable;
     private Observable<Object> backButtonObservable;
     private Observable<Object> rootButtonObservable;
-    private String fileSystemRootPath;
+    private File fileSystemRoot;
     FileBrowserModel fileBrowserModel;
     private final BehaviorSubject<List<File>> filesOutput = BehaviorSubject.create();
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private File currentlySelectedFile;
 
-    public FileBrowserViewModelWithStore(
+    public FileBrowserViewModelWithMiniStore(
             FileBrowserModel fileBrowserModel,
             Observable<File> listItemClickObservable,
             Observable<Object> backButtonObservable,
             Observable<Object> rootButtonObservable,
-            String fileSystemRootPath) {
+            File fileSystemRoot) {
         this.fileBrowserModel = fileBrowserModel;
         this.listItemClickObservable = listItemClickObservable;
         this.backButtonObservable = backButtonObservable;
         this.rootButtonObservable = rootButtonObservable;
-        this.fileSystemRootPath = fileSystemRootPath;
+        this.fileSystemRoot = fileSystemRoot;
     }
 
     public Observable<List<File>> getFileListObservable(){
@@ -41,11 +42,17 @@ public class FileBrowserViewModelWithStore {
     public void subscribe(){
         Observable<File> fileNavigateBackEventObservable =
                 backButtonObservable
-                        .withLatestFrom(fileBrowserModel.getSelectedFile(),
-                                (ignore,selectedFile) -> selectedFile.getParentFile());
+                        .map(event -> {
+                            File parentDir = currentlySelectedFile.getParentFile();
+                            if(parentDir.getParent() != null) {
+                                //not the root element
+                                return parentDir;
+                            }
+                            return null; //from root element one cannot navigate up
+                        });
 
         Observable<File> navigateToRootObservable =
-                rootButtonObservable.map(event -> new File(fileSystemRootPath));
+                rootButtonObservable.map(event -> fileSystemRoot);
 
         Observable<File> fileChangedObservable =
                 Observable.merge(
@@ -55,7 +62,10 @@ public class FileBrowserViewModelWithStore {
 
         compositeDisposable.add(
                 fileChangedObservable
-                .subscribe(file -> fileBrowserModel.putSelectedFile(file))
+                .subscribe(file -> {
+                        fileBrowserModel.putSelectedFile(file);
+                        currentlySelectedFile = file;
+                })
         );
         compositeDisposable.add(fileBrowserModel.getFilesList()
                 .doOnNext(dir -> Log.d(TAG, "Selected dir " + dir))
