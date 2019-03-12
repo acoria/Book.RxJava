@@ -1,4 +1,4 @@
-package com.example.vtewe.rxjava.rxjavaforandroid.chapt8_tictactoe;
+package com.example.vtewe.rxjava.rxjavaforandroid.chapt8_tictactoe.view;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -13,14 +13,14 @@ import android.util.Log;
 import android.view.View;
 
 import com.example.vtewe.rxjava.R;
-import com.example.vtewe.rxjava.rxjavaforandroid.chapt8_tictactoe.pojo.FullGameState;
-import com.example.vtewe.rxjava.rxjavaforandroid.chapt8_tictactoe.pojo.GameGrid;
+import com.example.vtewe.rxjava.rxjavaforandroid.chapt8_tictactoe.pojo.GameState;
 import com.example.vtewe.rxjava.rxjavaforandroid.chapt8_tictactoe.pojo.GameSymbol;
 import com.example.vtewe.rxjava.rxjavaforandroid.chapt8_tictactoe.pojo.GridPosition;
 
 public class GameGridView extends View {
     private static final String TAG = GameGridView.class.getSimpleName();
-    private FullGameState gameState;
+    private GameState gameState;
+//    private FullGameState gameState;
     private int width;
     private int height;
     private final Paint linePaint;
@@ -80,11 +80,11 @@ public class GameGridView extends View {
 
         drawSymbols(canvas, gridWidth, gridHeight, tileWidth, tileHeight);
         drawGridLines(canvas, gridWidth, gridHeight, tileWidth, tileHeight);
-        if (gameState.getGameStatus().isEnded()) {
-            drawWinner(canvas, tileWidth, tileHeight,
-                    gameState.getGameStatus().getWinningPositionStart(),
-                    gameState.getGameStatus().getWinningPositionEnd());
-        }
+//        if (gameState.getGameStatus().isEnded()) {
+//            drawWinner(canvas, tileWidth, tileHeight,
+//                    gameState.getGameStatus().getWinningPositionStart(),
+//                    gameState.getGameStatus().getWinningPositionEnd());
+//        }
     }
 
     private void drawSymbols(Canvas canvas,
@@ -94,11 +94,10 @@ public class GameGridView extends View {
             return;
         }
 
-        GameGrid gameGrid = gameState.getGameState().getGameGrid();
 
         for (int i = 0; i < gridWidth; i++) {
             for (int n = 0; n < gridHeight; n++) {
-                GameSymbol symbol = gameGrid.getSymbolAt(i, n);
+                GameSymbol symbol = gameState.getGameGrid().getSymbolAt(i, n);
                 RectF dst = new RectF(i * tileWidth, n * tileHeight,
                         (i + 1) * tileWidth, (n + 1) * tileHeight);
                 if (symbol == GameSymbol.BLACK) {
@@ -140,16 +139,20 @@ public class GameGridView extends View {
                 winnerLinePaint);
     }
 
-    public void setData(FullGameState gameState) {
+//    public void setData(FullGameState gameState) {
+    public void setData(GameState gameState) {
+        Log.d(TAG, "newData");
         this.gameState = gameState;
         invalidate();
     }
 
     public int getGridWidth() {
-        return gameState.getGameState().getGameGrid().getWidth();
+        if(gameState == null)return 3;
+        return gameState.getGameGrid().getWidth();
     }
 
     public int getGridHeight() {
-        return gameState.getGameState().getGameGrid().getHeight();
+        if(gameState == null)return 3;
+        return gameState.getGameGrid().getHeight();
     }
 }

@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".rxjavaforandroid.MainActivityForRxJava">
-
+    <View android:id="@+id/strut"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerHorizontal="true"/>
     <Button
         android:id="@+id/my_own_observable"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_alignRight="@id/strut"
+        android:layout_alignParentLeft="true"
         android:text="My Own Observable"/>
     <!--<Button-->
         <!--android:id="@+id/newsarticle"-->
@@ -19,37 +24,74 @@
         <!--android:text="News article"/>-->
     <Button
         android:id="@+id/disposables"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/my_own_observable"
+        android:layout_alignRight="@id/strut"
+        android:layout_alignParentLeft="true"
         android:text="Disposables"/>
     <Button
         android:id="@+id/subjects"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_below="@id/disposables"
+        android:layout_alignRight="@id/strut"
+        android:layout_alignParentLeft="true"
         android:text="Subjects"/>
     <Button
         android:id="@+id/filebrowser"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_below="@id/subjects"
+        android:layout_alignRight="@id/strut"
+        android:layout_alignParentLeft="true"
         android:text="File Browser"/>
     <Button
         android:id="@+id/fb_coffee_break"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_below="@id/filebrowser"
+        android:layout_alignRight="@id/strut"
+        android:layout_alignParentLeft="true"
         android:text="File Browser - Coffee Break"/>
     <Button
         android:id="@+id/filebrowser_ministore"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_below="@id/fb_coffee_break"
+        android:layout_alignRight="@id/strut"
+        android:layout_alignParentLeft="true"
         android:text="File Browser - MiniStore"/>
     <Button
         android:id="@+id/filebrowser_store"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_below="@id/filebrowser_ministore"
+        android:layout_alignRight="@id/strut"
+        android:layout_alignParentLeft="true"
         android:text="File Browser - Store"/>
     <Button
         android:id="@+id/tictactoe"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_below="@id/filebrowser_store"
+        android:layout_alignRight="@id/strut"
+        android:layout_alignParentLeft="true"
         android:text="Tic Tac Toe"/>
-</LinearLayout>
+    <Button
+        android:id="@+id/alertDialog"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tictactoe"
+        android:layout_alignRight="@id/strut"
+        android:layout_alignParentLeft="true"
+        android:text="Alert Dialog"/>
+
+    <Button
+        android:id="@+id/newButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/strut"
+        android:layout_alignParentRight="true"
+        android:text="Testbutton"/>
+</RelativeLayout>

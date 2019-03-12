@@ -14,7 +14,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".rxjavaforandroid.chapt8_tictactoe.TicTacToeActivity"></activity>
+        <activity
+            android:name=".rxjavaforandroid.chapt8_coffeeBreak.AlertDialogActivity"
+            android:label="@string/title_activity_alert_dialog"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".rxjavaforandroid.chapt8_tictactoe.TicTacToeActivity" />
         <activity android:name=".rxjavaforandroid.chapt6_fileBrowser.fb_CoffeeBreak.FB_CoffeeBreak" />
         <activity android:name=".rxjavaforandroid.MainActivityForRxJava">
             <intent-filter>

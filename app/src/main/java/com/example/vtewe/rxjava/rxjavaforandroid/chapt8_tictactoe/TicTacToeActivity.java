@@ -1,85 +1,64 @@
 package com.example.vtewe.rxjava.rxjavaforandroid.chapt8_tictactoe;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MotionEvent;
-import android.widget.Toast;
+import android.support.v7.app.AppCompatActivity;
 
 import com.example.vtewe.rxjava.R;
-import com.example.vtewe.rxjava.rxjavaforandroid.chapt8_tictactoe.pojo.FullGameState;
-import com.example.vtewe.rxjava.rxjavaforandroid.chapt8_tictactoe.pojo.GameGrid;
-import com.example.vtewe.rxjava.rxjavaforandroid.chapt8_tictactoe.pojo.GameState;
-import com.example.vtewe.rxjava.rxjavaforandroid.chapt8_tictactoe.pojo.GameStatus;
-import com.example.vtewe.rxjava.rxjavaforandroid.chapt8_tictactoe.pojo.GameSymbol;
 import com.example.vtewe.rxjava.rxjavaforandroid.chapt8_tictactoe.pojo.GridPosition;
-import com.jakewharton.rxbinding2.view.RxView;
+import com.example.vtewe.rxjava.rxjavaforandroid.chapt8_tictactoe.view.InteractiveGameGridView;
+import com.example.vtewe.rxjava.rxjavaforandroid.chapt8_tictactoe.view.PlayerView;
 
 import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class TicTacToeActivity extends AppCompatActivity {
 
     public final static String TAG = TicTacToeActivity.class.getSimpleName();
+    GameViewModel viewModel;
+    private PlayerView playerInTurnView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tic_tac_toe);
 
-        GameGridView gameGridView = findViewById(R.id.grid_view);
+        InteractiveGameGridView gameGridView = findViewById(R.id.grid_view);
+        playerInTurnView = findViewById(R.id.player_in_turn_image_view);
 
-        Observable<MotionEvent> userTouchObservable = RxView.touches(gameGridView);
-        userTouchObservable
-                .filter(event -> event.getAction() == MotionEvent.ACTION_UP)
-                .map(event -> convertPixelsToGridPosition(
-                        event.getX(),event.getY(),
-                        gameGridView.getWidth(), gameGridView.getHeight(),
-                        gameGridView.getGridWidth(), gameGridView.getGridHeight()))
-                .subscribe(
-                    (gridPosition) -> Log.d(TAG, "gridPosX: " + gridPosition.getX() + " gridPosY: " + gridPosition.getY())
-//                (event) -> Toast.makeText(this, "Touched me!", Toast.LENGTH_LONG).show()
-        );
+        Observable<GridPosition> gridPositionEventObservable = gameGridView.getTouchesOnGrid();
 
-        testfillGridView();
+        viewModel = new GameViewModel(gridPositionEventObservable);
+        viewModel.getGameState()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(gameGridView::setData);
 
+        viewModel.getPlayerInTurn()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(playerInTurnView::setData);
+
+        viewModel.subscribe();
     }
 
-    private GridPosition convertPixelsToGridPosition(
-            float touchX, float touchY,
-            int viewWidthPixels, int viewHeightPixels,
-            int gridWidth, int gridHeight){
-
-        // Horizontal GridPosition coordinate as i
-        float rx = touchX /
-                (float)(viewWidthPixels+1);
-        int i = (int)(rx * gridWidth);
-        // Vertical GridPosition coordinate as n
-        float ry = touchY /
-                (float)(viewHeightPixels+1);
-        int n = (int)(ry * gridHeight);
-        return new GridPosition(i, n);
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        viewModel.unsubscribe();
     }
 
-    private void testfillGridView() {
-        GameGridView gameGridView = findViewById(R.id.grid_view);
+    private void testfillGrid(){
+        //        GameSymbol[][] gameSymbol =
+//                new GameSymbol[][]{
+//                        new GameSymbol[]{
+//                                GameSymbol.EMPTY, GameSymbol.EMPTY, GameSymbol.EMPTY
+//                        },
+//                        new GameSymbol[]{
+//                                GameSymbol.EMPTY, GameSymbol.EMPTY, GameSymbol.EMPTY
+//                        },
+//                        new GameSymbol[]{
+//                                GameSymbol.EMPTY, GameSymbol.EMPTY, GameSymbol.EMPTY
+//                        }
+//
+//                };
 
-        GameSymbol[][] gameSymbol =
-                new GameSymbol[][] {
-                        new GameSymbol[]{
-                                GameSymbol.BLACK, GameSymbol.EMPTY, GameSymbol.EMPTY
-                        },
-                        new GameSymbol[]{
-                                GameSymbol.BLACK, GameSymbol.RED, GameSymbol.EMPTY
-                        },
-                        new GameSymbol[]{
-                                GameSymbol.RED, GameSymbol.EMPTY, GameSymbol.EMPTY
-                        }
-
-                };
-        GameGrid gameGrid = new GameGrid(3, 3, gameSymbol);
-        GameState gameState = new GameState(gameGrid, GameSymbol.BLACK);
-        GameStatus gameStatus = GameStatus.ongoing();
-
-        gameGridView.setData(new FullGameState(gameState, gameStatus));
     }
 }
