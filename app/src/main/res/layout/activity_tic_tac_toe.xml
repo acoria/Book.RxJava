@@ -15,7 +15,24 @@
         android:layout_width="300dp"
         android:layout_height="300dp"
         android:layout_centerInParent="true"/>
-
+    <FrameLayout
+        android:id="@+id/winner_view"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        android:alpha="0.9"
+        android:background="#fff">
+        <com.example.vtewe.rxjava.rxjavaforandroid.chapt8_tictactoe.view.WinnerTextView
+            android:id="@+id/winner_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="30dp"
+            android:textColor="#000"
+            android:text="test"/>
+    </FrameLayout>
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -31,4 +48,12 @@
             android:layout_width="30dp"
             android:layout_height="30dp"/>
     </LinearLayout>
+    <Button
+        android:id="@+id/new_game_button"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:text="New Game"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"/>
 </RelativeLayout>

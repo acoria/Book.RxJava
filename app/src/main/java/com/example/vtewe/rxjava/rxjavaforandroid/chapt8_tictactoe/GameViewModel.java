@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.example.vtewe.rxjava.rxjavaforandroid.chapt8_tictactoe.pojo.GameGrid;
 import com.example.vtewe.rxjava.rxjavaforandroid.chapt8_tictactoe.pojo.GameState;
+import com.example.vtewe.rxjava.rxjavaforandroid.chapt8_tictactoe.pojo.GameStatus;
 import com.example.vtewe.rxjava.rxjavaforandroid.chapt8_tictactoe.pojo.GameSymbol;
 import com.example.vtewe.rxjava.rxjavaforandroid.chapt8_tictactoe.pojo.GridPosition;
 
@@ -25,10 +26,13 @@ public class GameViewModel {
 
     private final Observable<GameSymbol> playerInTurnObservable;
     private final Observable<GridPosition> touchEventObservable;
+    private final Observable<Object> newGameEventObservable;
+    private Observable<GameStatus> gameStatusObservable;
 
 
-    public GameViewModel(Observable<GridPosition> touchEventObservable){
+    public GameViewModel(Observable<GridPosition> touchEventObservable, Observable<Object> newGameEventObservable){
         this.touchEventObservable = touchEventObservable;
+        this.newGameEventObservable = newGameEventObservable;
 
         playerInTurnObservable =
                 gameStateSubject
@@ -37,10 +41,22 @@ public class GameViewModel {
                             Log.d(TAG,"playerInTurnObservable - symbol");
                             if(symbol == GameSymbol.RED){
                                 return GameSymbol.BLACK;
+//                            }else if(symbol == GameSymbol.BLACK){
+//                                return GameSymbol.TRIANGLE;
                             }else{
                                 return GameSymbol.RED;
                             }
                         });
+
+        gameStatusObservable =
+                gameStateSubject
+                    .map(gameState -> {
+                        GameSymbol winner = getWinner(gameState.getGameGrid());
+                        if(winner != null){
+                            return GameStatus.ended(winner);
+                        }
+                        return GameStatus.ongoing();
+                    });
     }
 
     public Observable<GameState> getGameState(){
@@ -52,12 +68,36 @@ public class GameViewModel {
         return playerInTurnObservable;
     }
 
+    public Observable<GameStatus> getGameStatus(){ return gameStatusObservable;}
+
+    private static GameSymbol getWinner(GameGrid gameGrid){
+        return GameUtils.calculateWinnerForGrid(gameGrid);
+    }
+
     public void subscribe(){
+
+        subscriptions.add(newGameEventObservable
+                .map(ignore -> EMPTY_GAME)
+                .subscribe(gameStateSubject::onNext));
+
+        Observable<GridPosition> filteredTouchesEventObservable =
+                touchEventObservable
+                //filter when game has ended
+                .withLatestFrom(gameStatusObservable, Pair::new)
+                .filter(pair -> !pair.second.isEnded())
+                .map(pair -> pair.first)
+                //filter when an occupied grid is touched
+                .withLatestFrom(gameStateSubject, Pair::new)
+                .filter(pair ->{
+                    GridPosition gridPosition = pair.first;
+                    return pair.second.isEmpty(gridPosition);
+                })
+                .map(pair -> pair.first);
 
         Observable<Pair<GameState, GameSymbol>> gameInfoObservable =
                 Observable.combineLatest(gameStateSubject, playerInTurnObservable, Pair::new);
 
-        subscriptions.add(touchEventObservable
+        subscriptions.add(filteredTouchesEventObservable
                 //gets the latest value from another observable, without triggering the chain for new value coming from it
                 .withLatestFrom(
                         gameInfoObservable,

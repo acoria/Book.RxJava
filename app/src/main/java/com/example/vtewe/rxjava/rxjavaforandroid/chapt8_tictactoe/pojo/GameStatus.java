@@ -1,16 +1,12 @@
 package com.example.vtewe.rxjava.rxjavaforandroid.chapt8_tictactoe.pojo;
 
 public class GameStatus {
-    private final GameSymbol winner;
-    private final GridPosition winningPositionStart;
-    private final GridPosition winningPositionEnd;
+    private boolean isEnded;
+    private GameSymbol winner;
 
-    protected GameStatus(GameSymbol winner,
-                         GridPosition winningPositionStart,
-                         GridPosition winningPositionEnd) {
+
+    public GameStatus(GameSymbol winner){
         this.winner = winner;
-        this.winningPositionStart = winningPositionStart;
-        this.winningPositionEnd = winningPositionEnd;
     }
 
     public boolean isEnded() {
@@ -21,21 +17,11 @@ public class GameStatus {
         return winner;
     }
 
-    public GridPosition getWinningPositionStart() {
-        return winningPositionStart;
-    }
-
-    public GridPosition getWinningPositionEnd() {
-        return winningPositionEnd;
-    }
-
-    public static GameStatus ended(GameSymbol winner,
-                                   GridPosition winningPositionStart,
-                                   GridPosition winningPositionEnd) {
-        return new GameStatus(winner, winningPositionStart, winningPositionEnd);
+    public static GameStatus ended(GameSymbol winner){
+        return new GameStatus(winner);
     }
 
     public static GameStatus ongoing() {
-        return new GameStatus(null, null, null);
+        return new GameStatus(null);
     }
 }

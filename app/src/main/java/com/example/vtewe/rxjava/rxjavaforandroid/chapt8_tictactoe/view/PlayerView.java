@@ -29,6 +29,9 @@ public class PlayerView extends AppCompatImageView {
             case RED:
                 setImageResource(R.drawable.symbol_red_circle);
                 break;
+            case TRIANGLE:
+                setImageResource(R.drawable.symbol_triangle);
+                break;
             case EMPTY:
                 setImageResource(0);
         }

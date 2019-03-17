@@ -28,6 +28,7 @@ public class GameGridView extends View {
     private final Paint bitmapPaint;
     private final Bitmap blackPlayerBitmap;
     private final Bitmap redPlayerBitmap;
+    private final Bitmap trianglePlayerBitmap;
     private final Rect bitmapSrcRect;
 
     public GameGridView(Context context) {
@@ -53,6 +54,7 @@ public class GameGridView extends View {
 
         blackPlayerBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.symbol_black_circle);
         redPlayerBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.symbol_red_circle);
+        trianglePlayerBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.symbol_triangle);
         bitmapSrcRect = new Rect(0, 0, blackPlayerBitmap.getWidth(), blackPlayerBitmap.getHeight());
     }
 
@@ -110,7 +112,12 @@ public class GameGridView extends View {
                             redPlayerBitmap,
                             bitmapSrcRect, dst,
                             bitmapPaint);
-                }
+                } else if (symbol == GameSymbol.TRIANGLE) {
+                canvas.drawBitmap(
+                        trianglePlayerBitmap,
+                        bitmapSrcRect, dst,
+                        bitmapPaint);
+            }
             }
         }
     }
