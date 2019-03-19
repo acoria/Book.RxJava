@@ -88,10 +88,10 @@
         android:text="Alert Dialog"/>
 
     <Button
-        android:id="@+id/newButton"
+        android:id="@+id/connectFour"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/strut"
         android:layout_alignParentRight="true"
-        android:text="Testbutton"/>
+        android:text="Connect Four"/>
 </RelativeLayout>

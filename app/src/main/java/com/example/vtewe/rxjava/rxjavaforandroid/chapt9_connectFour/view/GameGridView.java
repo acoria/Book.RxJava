@@ -1,4 +1,4 @@
-package com.example.vtewe.rxjava.rxjavaforandroid.chapt8_tictactoe.view;
+package com.example.vtewe.rxjava.rxjavaforandroid.chapt9_connectFour.view;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -13,9 +13,10 @@ import android.util.Log;
 import android.view.View;
 
 import com.example.vtewe.rxjava.R;
-import com.example.vtewe.rxjava.rxjavaforandroid.chapt8_tictactoe.pojo.GameState;
-import com.example.vtewe.rxjava.rxjavaforandroid.chapt8_tictactoe.pojo.GameSymbol;
-import com.example.vtewe.rxjava.rxjavaforandroid.chapt8_tictactoe.pojo.GridPosition;
+import com.example.vtewe.rxjava.rxjavaforandroid.chapt9_connectFour.pojo.GameState;
+import com.example.vtewe.rxjava.rxjavaforandroid.chapt9_connectFour.pojo.GameSymbol;
+import com.example.vtewe.rxjava.rxjavaforandroid.chapt9_connectFour.pojo.GridPosition;
+
 
 public class GameGridView extends View {
     private static final String TAG = GameGridView.class.getSimpleName();
@@ -26,8 +27,8 @@ public class GameGridView extends View {
     private final Paint linePaint;
     private final Paint winnerLinePaint;
     private final Paint bitmapPaint;
-    private final Bitmap circlePlayerBitmap;
-    private final Bitmap crossPlayerBitmap;
+    private final Bitmap blackPlayerBitmap;
+    private final Bitmap redPlayerBitmap;
     private final Bitmap trianglePlayerBitmap;
     private final Rect bitmapSrcRect;
 
@@ -52,10 +53,10 @@ public class GameGridView extends View {
 
         bitmapPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
-        circlePlayerBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.symbol_circle);
-        crossPlayerBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.symbol_cross);
+        blackPlayerBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.symbol_black_circle);
+        redPlayerBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.symbol_red_circle);
         trianglePlayerBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.symbol_triangle);
-        bitmapSrcRect = new Rect(0, 0, circlePlayerBitmap.getWidth(), circlePlayerBitmap.getHeight());
+        bitmapSrcRect = new Rect(0, 0, blackPlayerBitmap.getWidth(), blackPlayerBitmap.getHeight());
     }
 
     @Override
@@ -102,14 +103,14 @@ public class GameGridView extends View {
                 GameSymbol symbol = gameState.getGameGrid().getSymbolAt(i, n);
                 RectF dst = new RectF(i * tileWidth, n * tileHeight,
                         (i + 1) * tileWidth, (n + 1) * tileHeight);
-                if (symbol == GameSymbol.CIRCLE) {
+                if (symbol == GameSymbol.BLACK) {
                     canvas.drawBitmap(
-                            circlePlayerBitmap,
+                            blackPlayerBitmap,
                             bitmapSrcRect, dst,
                             bitmapPaint);
-                } else if (symbol == GameSymbol.CROSS) {
+                } else if (symbol == GameSymbol.RED) {
                     canvas.drawBitmap(
-                            crossPlayerBitmap,
+                            redPlayerBitmap,
                             bitmapSrcRect, dst,
                             bitmapPaint);
                 } else if (symbol == GameSymbol.TRIANGLE) {

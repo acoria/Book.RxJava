@@ -1,11 +1,11 @@
-package com.example.vtewe.rxjava.rxjavaforandroid.chapt8_tictactoe.view;
+package com.example.vtewe.rxjava.rxjavaforandroid.chapt9_connectFour.view;
 
 import android.content.Context;
-import android.util.AttributeSet;
 import android.support.v7.widget.AppCompatImageView;
+import android.util.AttributeSet;
 
 import com.example.vtewe.rxjava.R;
-import com.example.vtewe.rxjava.rxjavaforandroid.chapt8_tictactoe.pojo.GameSymbol;
+import com.example.vtewe.rxjava.rxjavaforandroid.chapt9_connectFour.pojo.GameSymbol;
 
 public class PlayerView extends AppCompatImageView {
 
@@ -23,11 +23,11 @@ public class PlayerView extends AppCompatImageView {
 
     public void setData(GameSymbol gameSymbol){
         switch(gameSymbol){
-            case CIRCLE:
-                setImageResource(R.drawable.symbol_circle);
+            case BLACK:
+                setImageResource(R.drawable.symbol_black_circle);
                 break;
-            case CROSS:
-                setImageResource(R.drawable.symbol_cross);
+            case RED:
+                setImageResource(R.drawable.symbol_red_circle);
                 break;
             case TRIANGLE:
                 setImageResource(R.drawable.symbol_triangle);

@@ -13,6 +13,7 @@ import com.example.vtewe.rxjava.rxjavaforandroid.chapt7_stores.FileBrowserActivi
 import com.example.vtewe.rxjava.rxjavaforandroid.chapt7_stores.first_mini_store.FileBrowserActivityWithMiniStore;
 import com.example.vtewe.rxjava.rxjavaforandroid.chapt8_coffeeBreak.AlertDialogActivity;
 import com.example.vtewe.rxjava.rxjavaforandroid.chapt8_tictactoe.TicTacToeActivity;
+import com.example.vtewe.rxjava.rxjavaforandroid.chapt9_connectFour.ConnectFourActivity;
 import com.jakewharton.rxbinding2.view.RxView;
 
 import io.reactivex.disposables.CompositeDisposable;
@@ -46,6 +47,8 @@ public class MainActivityForRxJava extends AppCompatActivity {
                 .subscribe(event -> startAnActivity(TicTacToeActivity.class)));
         compositeDisposable.add(RxView.clicks(findViewById(R.id.alertDialog))
                 .subscribe(event -> startAnActivity(AlertDialogActivity.class)));
+        compositeDisposable.add(RxView.clicks(findViewById(R.id.connectFour))
+                .subscribe(event -> startAnActivity(ConnectFourActivity.class)));
     }
 
     void startAnActivity(Class activityClass){

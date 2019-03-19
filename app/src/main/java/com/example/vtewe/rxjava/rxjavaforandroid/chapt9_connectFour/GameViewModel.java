@@ -1,13 +1,14 @@
-package com.example.vtewe.rxjava.rxjavaforandroid.chapt8_tictactoe;
+package com.example.vtewe.rxjava.rxjavaforandroid.chapt9_connectFour;
 
 import android.support.v4.util.Pair;
 import android.util.Log;
 
-import com.example.vtewe.rxjava.rxjavaforandroid.chapt8_tictactoe.pojo.GameGrid;
-import com.example.vtewe.rxjava.rxjavaforandroid.chapt8_tictactoe.pojo.GameState;
-import com.example.vtewe.rxjava.rxjavaforandroid.chapt8_tictactoe.pojo.GameStatus;
-import com.example.vtewe.rxjava.rxjavaforandroid.chapt8_tictactoe.pojo.GameSymbol;
-import com.example.vtewe.rxjava.rxjavaforandroid.chapt8_tictactoe.pojo.GridPosition;
+
+import com.example.vtewe.rxjava.rxjavaforandroid.chapt9_connectFour.pojo.GameGrid;
+import com.example.vtewe.rxjava.rxjavaforandroid.chapt9_connectFour.pojo.GameState;
+import com.example.vtewe.rxjava.rxjavaforandroid.chapt9_connectFour.pojo.GameStatus;
+import com.example.vtewe.rxjava.rxjavaforandroid.chapt9_connectFour.pojo.GameSymbol;
+import com.example.vtewe.rxjava.rxjavaforandroid.chapt9_connectFour.pojo.GridPosition;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
@@ -39,12 +40,12 @@ public class GameViewModel {
                         .map(GameState::getLastPlayedSymbol)
                         .map(symbol -> {
                             Log.d(TAG,"playerInTurnObservable - symbol");
-                            if(symbol == GameSymbol.CROSS){
-                                return GameSymbol.CIRCLE;
+                            if(symbol == GameSymbol.RED){
+                                return GameSymbol.BLACK;
 //                            }else if(symbol == GameSymbol.CIRCLE){
 //                                return GameSymbol.TRIANGLE;
                             }else{
-                                return GameSymbol.CROSS;
+                                return GameSymbol.RED;
                             }
                         });
 
