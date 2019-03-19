@@ -53,7 +53,7 @@ public class ConnectFourActivity extends AppCompatActivity {
     }
 
     private void makeViewBinding(){
-        viewSubscriptions.add(viewModel.getGameState()
+        viewSubscriptions.add(viewModel.getFullGameState()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(gameGridView::setData));
 

@@ -13,15 +13,14 @@ import android.util.Log;
 import android.view.View;
 
 import com.example.vtewe.rxjava.R;
-import com.example.vtewe.rxjava.rxjavaforandroid.chapt9_connectFour.pojo.GameState;
+import com.example.vtewe.rxjava.rxjavaforandroid.chapt9_connectFour.pojo.FullGameState;
 import com.example.vtewe.rxjava.rxjavaforandroid.chapt9_connectFour.pojo.GameSymbol;
 import com.example.vtewe.rxjava.rxjavaforandroid.chapt9_connectFour.pojo.GridPosition;
 
 
 public class GameGridView extends View {
     private static final String TAG = GameGridView.class.getSimpleName();
-    private GameState gameState;
-//    private FullGameState gameState;
+    private FullGameState fullGameState;
     private int width;
     private int height;
     private final Paint linePaint;
@@ -31,6 +30,7 @@ public class GameGridView extends View {
     private final Bitmap redPlayerBitmap;
     private final Bitmap trianglePlayerBitmap;
     private final Rect bitmapSrcRect;
+
 
     public GameGridView(Context context) {
         this(context, null);
@@ -81,26 +81,22 @@ public class GameGridView extends View {
         final float tileWidth = width / gridWidth;
         final float tileHeight = height / gridHeight;
 
-        drawSymbols(canvas, gridWidth, gridHeight, tileWidth, tileHeight);
         drawGridLines(canvas, gridWidth, gridHeight, tileWidth, tileHeight);
-//        if (gameState.getGameStatus().isEnded()) {
-//            drawWinner(canvas, tileWidth, tileHeight,
-//                    gameState.getGameStatus().getWinningPositionStart(),
-//                    gameState.getGameStatus().getWinningPositionEnd());
-//        }
+        drawSymbols(canvas, gridWidth, gridHeight, tileWidth, tileHeight);
+        if (fullGameState.getGameStatus().isEnded()) {
+            drawWinner(canvas, tileWidth, tileHeight, fullGameState.getGameStatus().getWinningPositionStart(), fullGameState.getGameStatus().getWinningPositionEnd());
+        }
     }
 
     private void drawSymbols(Canvas canvas,
                              float gridWidth, float gridHeight,
                              float tileWidth, float tileHeight) {
-        if (gameState == null) {
+        if (fullGameState == null) {
             return;
         }
-
-
         for (int i = 0; i < gridWidth; i++) {
             for (int n = 0; n < gridHeight; n++) {
-                GameSymbol symbol = gameState.getGameGrid().getSymbolAt(i, n);
+                GameSymbol symbol = fullGameState.getGameState().getGameGrid().getSymbolAt(i, n);
                 RectF dst = new RectF(i * tileWidth, n * tileHeight,
                         (i + 1) * tileWidth, (n + 1) * tileHeight);
                 if (symbol == GameSymbol.BLACK) {
@@ -147,20 +143,19 @@ public class GameGridView extends View {
                 winnerLinePaint);
     }
 
-//    public void setData(FullGameState gameState) {
-    public void setData(GameState gameState) {
+    public void setData(FullGameState fullGameState) {
         Log.d(TAG, "newData");
-        this.gameState = gameState;
+        this.fullGameState = fullGameState;
         invalidate();
     }
 
     public int getGridWidth() {
-        if(gameState == null)return 3;
-        return gameState.getGameGrid().getWidth();
+        if(fullGameState == null)return 3;
+        return fullGameState.getGameState().getGameGrid().getWidth();
     }
 
     public int getGridHeight() {
-        if(gameState == null)return 3;
-        return gameState.getGameGrid().getHeight();
+        if(fullGameState == null)return 3;
+        return fullGameState.getGameState().getGameGrid().getHeight();
     }
 }

@@ -4,6 +4,7 @@ import android.support.v4.util.Pair;
 import android.util.Log;
 
 
+import com.example.vtewe.rxjava.rxjavaforandroid.chapt9_connectFour.pojo.FullGameState;
 import com.example.vtewe.rxjava.rxjavaforandroid.chapt9_connectFour.pojo.GameGrid;
 import com.example.vtewe.rxjava.rxjavaforandroid.chapt9_connectFour.pojo.GameState;
 import com.example.vtewe.rxjava.rxjavaforandroid.chapt9_connectFour.pojo.GameStatus;
@@ -17,8 +18,8 @@ import io.reactivex.subjects.BehaviorSubject;
 public class GameViewModel {
     public final String TAG = GameViewModel.class.getSimpleName();
 
-    private static final int GRID_WIDTH = 3;
-    private static final int GRID_HEIGHT = 3;
+    private static final int GRID_WIDTH = 7;
+    private static final int GRID_HEIGHT = 7;
     private static final GameGrid EMPTY_GRID = new GameGrid(GRID_WIDTH, GRID_HEIGHT);
     private static final GameState EMPTY_GAME = new GameState(EMPTY_GRID, GameSymbol.EMPTY);
 
@@ -51,18 +52,11 @@ public class GameViewModel {
 
         gameStatusObservable =
                 gameStateSubject
-                    .map(gameState -> {
-                        GameSymbol winner = getWinner(gameState.getGameGrid());
-                        if(winner != null){
-                            return GameStatus.ended(winner);
-                        }
-                        return GameStatus.ongoing();
-                    });
+                    .map(gameState -> retrieveNewGameStatus(gameState.getGameGrid()));
     }
 
-    public Observable<GameState> getGameState(){
-        return gameStateSubject.hide();
-//                .map(GameState::getGameGrid);
+    public Observable<FullGameState> getFullGameState(){
+        return Observable.combineLatest(gameStateSubject,gameStatusObservable, FullGameState::new).hide();
     }
 
     public Observable<GameSymbol> getPlayerInTurn() {
@@ -71,8 +65,8 @@ public class GameViewModel {
 
     public Observable<GameStatus> getGameStatus(){ return gameStatusObservable;}
 
-    private static GameSymbol getWinner(GameGrid gameGrid){
-        return GameUtils.calculateWinnerForGrid(gameGrid);
+    private static GameStatus retrieveNewGameStatus(GameGrid gameGrid){
+        return GameUtils.calculateGameStatus(gameGrid);
     }
 
     public void subscribe(){
@@ -89,11 +83,10 @@ public class GameViewModel {
                 .map(pair -> pair.first)
                 //filter when an occupied grid is touched
                 .withLatestFrom(gameStateSubject, Pair::new)
-                .filter(pair ->{
-                    GridPosition gridPosition = pair.first;
-                    return pair.second.isEmpty(gridPosition);
-                })
-                .map(pair -> pair.first);
+                .map(pair -> GameUtils.calculateNewDropPosition(pair.first,pair.second.getGameGrid()))
+                //filter negative Y (when calculateNewDrop returned -1 for Y)
+                .filter(gridPosition -> gridPosition.getY() >= 0);
+
 
         Observable<Pair<GameState, GameSymbol>> gameInfoObservable =
                 Observable.combineLatest(gameStateSubject, playerInTurnObservable, Pair::new);

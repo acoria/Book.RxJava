@@ -3,10 +3,16 @@ package com.example.vtewe.rxjava.rxjavaforandroid.chapt9_connectFour.pojo;
 public class GameStatus {
     private boolean isEnded;
     private GameSymbol winner;
+    GridPosition winningPositionStart;
+    GridPosition winningPositionEnd;
 
 
-    public GameStatus(GameSymbol winner){
+    public GameStatus(GameSymbol winner,
+                      GridPosition winningPositionStart,
+                      GridPosition winningPositionEnd){
         this.winner = winner;
+        this.winningPositionStart = winningPositionStart;
+        this.winningPositionEnd = winningPositionEnd;
     }
 
     public boolean isEnded() {
@@ -17,11 +23,21 @@ public class GameStatus {
         return winner;
     }
 
-    public static GameStatus ended(GameSymbol winner){
-        return new GameStatus(winner);
+    public static GameStatus ended(GameSymbol winner,
+                                   GridPosition winningPositionStart,
+                                   GridPosition winningPositionEnd) {
+        return new GameStatus(winner, winningPositionStart, winningPositionEnd);
+    }
+
+    public GridPosition getWinningPositionStart() {
+        return winningPositionStart;
+    }
+
+    public GridPosition getWinningPositionEnd() {
+        return winningPositionEnd;
     }
 
     public static GameStatus ongoing() {
-        return new GameStatus(null);
+        return new GameStatus(null,null,null);
     }
 }
