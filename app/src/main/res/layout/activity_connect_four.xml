@@ -12,8 +12,8 @@
 
     <com.example.vtewe.rxjava.rxjavaforandroid.chapt9_connectFour.view.InteractiveGameGridView
         android:id="@+id/grid_view"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:layout_width="280dp"
+        android:layout_height="280dp"
         android:layout_centerInParent="true"/>
     <FrameLayout
         android:id="@+id/winner_view"
@@ -45,15 +45,37 @@
             android:text="Player in turn:"/>
         <com.example.vtewe.rxjava.rxjavaforandroid.chapt9_connectFour.view.PlayerView
             android:id="@+id/player_in_turn_image_view"
-            android:layout_width="30dp"
-            android:layout_height="30dp"/>
+            android:layout_width="25dp"
+            android:layout_height="25dp"/>
     </LinearLayout>
-    <Button
-        android:id="@+id/new_game_button"
-        android:layout_width="300dp"
-        android:layout_height="60dp"
-        android:text="New Game"
-        android:layout_marginTop="20dp"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true">
+        <Button
+            android:id="@+id/new_game_button"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:text="New Game"
+            android:layout_marginBottom="6dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/save_game_button"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:text="Save Game"/>
+            <Button
+                android:id="@+id/load_game_button"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:text="Load Game"/>
+        </LinearLayout>
+    </LinearLayout>
 </RelativeLayout>

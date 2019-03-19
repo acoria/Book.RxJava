@@ -8,16 +8,18 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".rxjavaforandroid.GameApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".rxjavaforandroid.chapt9_connectFour.LoadGameActivity"></activity>
         <activity
             android:name=".rxjavaforandroid.chapt8_coffeeBreak.AlertDialogActivity"
             android:label="@string/title_activity_alert_dialog"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".rxjavaforandroid.chapt9_connectFour.ConnectFourActivity" />
         <activity android:name=".rxjavaforandroid.chapt8_tictactoe.TicTacToeActivity" />
         <activity android:name=".rxjavaforandroid.chapt6_fileBrowser.fb_CoffeeBreak.FB_CoffeeBreak" />

@@ -1,5 +1,6 @@
 package com.example.vtewe.rxjava.rxjavaforandroid.chapt9_connectFour;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -9,6 +10,8 @@ import android.widget.FrameLayout;
 
 import com.example.vtewe.rxjava.R;
 
+import com.example.vtewe.rxjava.rxjavaforandroid.GameApplication;
+import com.example.vtewe.rxjava.rxjavaforandroid.chapt9_connectFour.data.GameModel;
 import com.example.vtewe.rxjava.rxjavaforandroid.chapt9_connectFour.pojo.GameStatus;
 import com.example.vtewe.rxjava.rxjavaforandroid.chapt9_connectFour.pojo.GridPosition;
 import com.example.vtewe.rxjava.rxjavaforandroid.chapt9_connectFour.view.InteractiveGameGridView;
@@ -30,6 +33,9 @@ public class ConnectFourActivity extends AppCompatActivity {
     private WinnerTextView winnerTextView;
     private FrameLayout winnerView;
     private Button newGameButton;
+    private Button saveGameButton;
+    private Button loadGameButton;
+    private GameModel gameModel;
 
 
     @Override
@@ -37,22 +43,48 @@ public class ConnectFourActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connect_four);
 
+        resolveViews();
+
+        // Get the shared GameModel
+        gameModel = ((GameApplication) getApplication()).getGameModel();
+
+        createViewModel();
+        makeViewBinding();
+    }
+
+    private void resolveViews() {
         gameGridView = findViewById(R.id.grid_view);
         winnerTextView = findViewById(R.id.winner_text_view);
         winnerView = findViewById(R.id.winner_view);
         playerInTurnView = findViewById(R.id.player_in_turn_image_view);
         newGameButton = findViewById(R.id.new_game_button);
+        saveGameButton = findViewById(R.id.save_game_button);
+        loadGameButton = findViewById(R.id.load_game_button);
+    }
 
+    private void createViewModel() {
         Observable<GridPosition> gridPositionEventObservable = gameGridView.getTouchesOnGrid();
 
-        Observable<Object> newGameEventObservable = RxView.clicks(newGameButton);
-
-        viewModel = new GameViewModel(gridPositionEventObservable, newGameEventObservable);
+        viewModel = new GameViewModel(
+                gameModel,
+                gridPositionEventObservable);
         viewModel.subscribe();
-        makeViewBinding();
     }
 
     private void makeViewBinding(){
+
+        viewSubscriptions.add(
+                RxView.clicks(newGameButton)
+                    .subscribe(ignore -> gameModel.newGame()));
+
+        viewSubscriptions.add(
+                RxView.clicks(saveGameButton)
+                        .subscribe(ignore -> gameModel.saveActiveGame()));
+
+        viewSubscriptions.add(
+                RxView.clicks(loadGameButton)
+                    .subscribe(ignore -> openLoadGameActivity()));
+
         viewSubscriptions.add(viewModel.getFullGameState()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(gameGridView::setData));
@@ -77,6 +109,11 @@ public class ConnectFourActivity extends AppCompatActivity {
         viewSubscriptions.add(viewModel.getGameStatus()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(winnerTextView::setData));
+    }
+
+    private void openLoadGameActivity() {
+        Intent intent = new Intent(this, LoadGameActivity.class);
+        startActivity(intent);
     }
 
     private void releaseViewBinding() {

@@ -4,8 +4,8 @@ import android.support.v4.util.Pair;
 import android.util.Log;
 
 
+import com.example.vtewe.rxjava.rxjavaforandroid.chapt9_connectFour.data.GameModel;
 import com.example.vtewe.rxjava.rxjavaforandroid.chapt9_connectFour.pojo.FullGameState;
-import com.example.vtewe.rxjava.rxjavaforandroid.chapt9_connectFour.pojo.GameGrid;
 import com.example.vtewe.rxjava.rxjavaforandroid.chapt9_connectFour.pojo.GameState;
 import com.example.vtewe.rxjava.rxjavaforandroid.chapt9_connectFour.pojo.GameStatus;
 import com.example.vtewe.rxjava.rxjavaforandroid.chapt9_connectFour.pojo.GameSymbol;
@@ -13,31 +13,28 @@ import com.example.vtewe.rxjava.rxjavaforandroid.chapt9_connectFour.pojo.GridPos
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.subjects.BehaviorSubject;
+
 
 public class GameViewModel {
     public final String TAG = GameViewModel.class.getSimpleName();
 
-    private static final int GRID_WIDTH = 7;
-    private static final int GRID_HEIGHT = 7;
-    private static final GameGrid EMPTY_GRID = new GameGrid(GRID_WIDTH, GRID_HEIGHT);
-    private static final GameState EMPTY_GAME = new GameState(EMPTY_GRID, GameSymbol.EMPTY);
-
     private final CompositeDisposable subscriptions = new CompositeDisposable();
-    private final BehaviorSubject<GameState> gameStateSubject = BehaviorSubject.createDefault(EMPTY_GAME);
 
     private final Observable<GameSymbol> playerInTurnObservable;
     private final Observable<GridPosition> touchEventObservable;
-    private final Observable<Object> newGameEventObservable;
     private Observable<GameStatus> gameStatusObservable;
+    private GameModel gameModel;
+    private Observable<GameState> gameStateObservable;
 
 
-    public GameViewModel(Observable<GridPosition> touchEventObservable, Observable<Object> newGameEventObservable){
+    public GameViewModel(
+            GameModel gameModel,
+            Observable<GridPosition> touchEventObservable){
         this.touchEventObservable = touchEventObservable;
-        this.newGameEventObservable = newGameEventObservable;
-
+        this.gameModel = gameModel;
+        this.gameStateObservable = gameModel.getActiveGameState();
         playerInTurnObservable =
-                gameStateSubject
+                gameStateObservable
                         .map(GameState::getLastPlayedSymbol)
                         .map(symbol -> {
                             Log.d(TAG,"playerInTurnObservable - symbol");
@@ -51,12 +48,13 @@ public class GameViewModel {
                         });
 
         gameStatusObservable =
-                gameStateSubject
-                    .map(gameState -> retrieveNewGameStatus(gameState.getGameGrid()));
+                gameStateObservable
+                    .map(GameState::getGameGrid)
+                    .map(GameUtils::calculateGameStatus);
     }
 
     public Observable<FullGameState> getFullGameState(){
-        return Observable.combineLatest(gameStateSubject,gameStatusObservable, FullGameState::new).hide();
+        return Observable.combineLatest(gameStateObservable, gameStatusObservable, FullGameState::new).hide();
     }
 
     public Observable<GameSymbol> getPlayerInTurn() {
@@ -65,16 +63,8 @@ public class GameViewModel {
 
     public Observable<GameStatus> getGameStatus(){ return gameStatusObservable;}
 
-    private static GameStatus retrieveNewGameStatus(GameGrid gameGrid){
-        return GameUtils.calculateGameStatus(gameGrid);
-    }
 
     public void subscribe(){
-
-        subscriptions.add(newGameEventObservable
-                .map(ignore -> EMPTY_GAME)
-                .subscribe(gameStateSubject::onNext));
-
         Observable<GridPosition> filteredTouchesEventObservable =
                 touchEventObservable
                 //filter when game has ended
@@ -82,14 +72,14 @@ public class GameViewModel {
                 .filter(pair -> !pair.second.isEnded())
                 .map(pair -> pair.first)
                 //filter when an occupied grid is touched
-                .withLatestFrom(gameStateSubject, Pair::new)
+                .withLatestFrom(gameStateObservable, Pair::new)
                 .map(pair -> GameUtils.calculateNewDropPosition(pair.first,pair.second.getGameGrid()))
                 //filter negative Y (when calculateNewDrop returned -1 for Y)
                 .filter(gridPosition -> gridPosition.getY() >= 0);
 
 
         Observable<Pair<GameState, GameSymbol>> gameInfoObservable =
-                Observable.combineLatest(gameStateSubject, playerInTurnObservable, Pair::new);
+                Observable.combineLatest(gameStateObservable, playerInTurnObservable, Pair::new);
 
         subscriptions.add(filteredTouchesEventObservable
                 //gets the latest value from another observable, without triggering the chain for new value coming from it
@@ -99,7 +89,7 @@ public class GameViewModel {
                             Log.d(TAG, gridPosition.toString());
                             return gameInfo.first.setSymbolAt(gridPosition, gameInfo.second);}
                 )
-                .subscribe(gameStateSubject::onNext));
+                .subscribe(gameState -> gameModel.putActiveGameState(gameState)));
     }
 
     public void unsubscribe(){
