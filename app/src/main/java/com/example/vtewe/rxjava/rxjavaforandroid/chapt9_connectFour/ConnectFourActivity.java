@@ -66,7 +66,8 @@ public class ConnectFourActivity extends AppCompatActivity {
         Observable<GridPosition> gridPositionEventObservable = gameGridView.getTouchesOnGrid();
 
         viewModel = new GameViewModel(
-                gameModel,
+                gameModel.getActiveGameState(),
+                gameModel::putActiveGameState,
                 gridPositionEventObservable);
         viewModel.subscribe();
     }

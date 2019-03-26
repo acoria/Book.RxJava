@@ -14,12 +14,12 @@ import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
 
 public class GameModel {
-    private static final String SAVED_GAMES_FILE_NAME = "saved_games";
 
+    private static final String SAVED_GAMES_FILE_NAME = "saved_games";
     private static final int GRID_WIDTH = 7;
     private static final int GRID_HEIGHT = 7;
     private static final GameGrid EMPTY_GRID = new GameGrid(GRID_WIDTH, GRID_HEIGHT);
-    private static final GameState EMPTY_GAME = new GameState(EMPTY_GRID, GameSymbol.EMPTY);
+    public static final GameState EMPTY_GAME = new GameState(EMPTY_GRID, GameSymbol.EMPTY);
     private final BehaviorSubject<GameState> activeGameState = BehaviorSubject.createDefault(EMPTY_GAME);
     private PersistedGameStore persistedGameStore;
 
