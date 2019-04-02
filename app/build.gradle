@@ -4,7 +4,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.example.vtewe.rxjava"
-        minSdkVersion 28
+        minSdkVersion 22
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -22,7 +22,7 @@ android {
     }
 }
 
-ext{
+ext {
     junitVersion = "4.12"
     mockitoVersion = "2.21.0"
     powermockVersion = "2.0.0-beta.5"
@@ -56,4 +56,11 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
     implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'org.jetbrains:annotations:15.0'
+
+    //Web socket
+    implementation 'com.github.nkzawa:socket.io-client:0.3.0'
+    implementation 'com.squareup.okhttp3:okhttp:3.6.0'
+
+    //Gson serializer
+    implementation 'com.google.code.gson:gson:2.4'
 }

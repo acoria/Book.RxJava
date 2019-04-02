@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:networkSecurityConfig="@xml/network_security_config"
         android:name=".rxjavaforandroid.GameApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -15,7 +16,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".rxjavaforandroid.chapt9_connectFour.LoadGameActivity"></activity>
+        <activity android:name=".rxjavaforandroid.chapt11_chatClient.ChatClientActivity"></activity>
+        <activity android:name=".rxjavaforandroid.chapt9_connectFour.LoadGameActivity" />
         <activity
             android:name=".rxjavaforandroid.chapt8_coffeeBreak.AlertDialogActivity"
             android:label="@string/title_activity_alert_dialog"

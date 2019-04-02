@@ -94,4 +94,12 @@
         android:layout_alignLeft="@id/strut"
         android:layout_alignParentRight="true"
         android:text="Connect Four"/>
+    <Button
+        android:id="@+id/chatClient"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/connectFour"
+        android:layout_alignLeft="@id/strut"
+        android:layout_alignParentRight="true"
+        android:text="Chat Client"/>
 </RelativeLayout>

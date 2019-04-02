@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.example.vtewe.rxjava.R;
+import com.example.vtewe.rxjava.rxjavaforandroid.chapt11_chatClient.ChatClientActivity;
 import com.example.vtewe.rxjava.rxjavaforandroid.chapt6_fileBrowser.FileBrowserActivity;
 import com.example.vtewe.rxjava.rxjavaforandroid.chapt6_fileBrowser.fb_CoffeeBreak.FB_CoffeeBreak;
 import com.example.vtewe.rxjava.rxjavaforandroid.chapt4_disposables.DisposablesActivity;
@@ -49,6 +50,8 @@ public class MainActivityForRxJava extends AppCompatActivity {
                 .subscribe(event -> startAnActivity(AlertDialogActivity.class)));
         compositeDisposable.add(RxView.clicks(findViewById(R.id.connectFour))
                 .subscribe(event -> startAnActivity(ConnectFourActivity.class)));
+        compositeDisposable.add(RxView.clicks(findViewById(R.id.chatClient))
+                .subscribe(event -> startAnActivity(ChatClientActivity.class)));
     }
 
     void startAnActivity(Class activityClass){
