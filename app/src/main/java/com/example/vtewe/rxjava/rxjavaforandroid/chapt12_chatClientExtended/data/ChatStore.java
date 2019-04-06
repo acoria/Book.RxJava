@@ -1,25 +1,24 @@
 package com.example.vtewe.rxjava.rxjavaforandroid.chapt12_chatClientExtended.data;
 
 
-import com.example.vtewe.rxjava.rxjavaforandroid.chapt12_chatClientExtended.ChatMessage;
-
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import io.reactivex.Observable;
-import io.reactivex.subjects.PublishSubject;
+import io.reactivex.subjects.BehaviorSubject;
 
 public class ChatStore {
 
-    private List<ChatMessage> cache = new ArrayList<>();
-    private PublishSubject<List<ChatMessage>> subject = PublishSubject.create();
+    private Map<String,ChatMessage> cache = new HashMap<>();
+    private BehaviorSubject<Collection<ChatMessage>> subject = BehaviorSubject.create();
 
     public void put(ChatMessage chatMessage){
-        cache.add(chatMessage);
-        subject.onNext(cache);
+        cache.put(chatMessage.getId(),chatMessage);
+        subject.onNext(cache.values());
     }
 
-    public Observable<List<ChatMessage>> getAll(){
+    public Observable<Collection<ChatMessage>> getStream(){
         return subject.hide();
     }
 }

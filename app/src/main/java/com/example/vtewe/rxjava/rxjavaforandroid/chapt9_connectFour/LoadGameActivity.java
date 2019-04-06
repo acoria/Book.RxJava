@@ -1,13 +1,11 @@
 package com.example.vtewe.rxjava.rxjavaforandroid.chapt9_connectFour;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.ListView;
 
 import com.example.vtewe.rxjava.R;
-import com.example.vtewe.rxjava.rxjavaforandroid.GameApplication;
+import com.example.vtewe.rxjava.rxjavaforandroid.CustomApplication;
 import com.example.vtewe.rxjava.rxjavaforandroid.chapt9_connectFour.data.GameModel;
 import com.example.vtewe.rxjava.rxjavaforandroid.chapt9_connectFour.pojo.SavedGame;
 
@@ -33,7 +31,7 @@ public class LoadGameActivity extends AppCompatActivity {
         setTitle("Load Previous Game");
 
         // Get the shared GameModel
-        gameModel = ((GameApplication) getApplication()).getGameModel();
+        gameModel = ((CustomApplication) getApplication()).getGameModel();
 
         listView = findViewById(R.id.saved_games_list);
         listAdapter = new SavedGamesListAdapter(this, android.R.layout.simple_list_item_1);

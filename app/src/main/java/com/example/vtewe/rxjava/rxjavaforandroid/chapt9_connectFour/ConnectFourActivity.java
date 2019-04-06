@@ -10,7 +10,7 @@ import android.widget.FrameLayout;
 
 import com.example.vtewe.rxjava.R;
 
-import com.example.vtewe.rxjava.rxjavaforandroid.GameApplication;
+import com.example.vtewe.rxjava.rxjavaforandroid.CustomApplication;
 import com.example.vtewe.rxjava.rxjavaforandroid.chapt9_connectFour.data.GameModel;
 import com.example.vtewe.rxjava.rxjavaforandroid.chapt9_connectFour.pojo.GameStatus;
 import com.example.vtewe.rxjava.rxjavaforandroid.chapt9_connectFour.pojo.GridPosition;
@@ -46,7 +46,7 @@ public class ConnectFourActivity extends AppCompatActivity {
         resolveViews();
 
         // Get the shared GameModel
-        gameModel = ((GameApplication) getApplication()).getGameModel();
+        gameModel = ((CustomApplication) getApplication()).getGameModel();
 
         createViewModel();
         makeViewBinding();
