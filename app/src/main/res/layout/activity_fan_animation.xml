@@ -5,6 +5,18 @@
     android:layout_height="match_parent"
     tools:context=".rxjavaforandroid.chapt13_fanAnimation.FanAnimationActivity">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/maps_background"
+        android:scaleType="centerCrop"/>
+
+    <View
+        android:id="@+id/veil"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#000"/>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
