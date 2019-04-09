@@ -110,4 +110,12 @@
         android:layout_alignLeft="@id/strut"
         android:layout_alignParentRight="true"
         android:text="Chat Client Extended"/>
+    <Button
+        android:id="@+id/fanAnimation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/chatClientExtended"
+        android:layout_alignLeft="@id/strut"
+        android:layout_alignParentRight="true"
+        android:text="Fan animation"/>
 </RelativeLayout>

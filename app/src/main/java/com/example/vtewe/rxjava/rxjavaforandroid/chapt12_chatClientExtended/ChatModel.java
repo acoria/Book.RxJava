@@ -81,11 +81,12 @@ public class ChatModel {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(messageListAsJson -> {
-                    for(String json : messageListAsJson){
+                    for(String json : messageListAsJson) {
                         ChatMessage chatMessage = gson.fromJson(json, ChatMessage.class);
                         chatStore.put(chatMessage.setPending(false));
                     }
-                }));
+                }
+                ,error -> Log.d(TAG,error.getMessage())));
     }
 
     void setupWebSocket(){

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import com.example.vtewe.rxjava.R;
 import com.example.vtewe.rxjava.rxjavaforandroid.chapt11_chatClient.ChatClientActivity;
 import com.example.vtewe.rxjava.rxjavaforandroid.chapt12_chatClientExtended.ChatClientActivityExtended;
+import com.example.vtewe.rxjava.rxjavaforandroid.chapt13_fanAnimation.FanAnimationActivity;
 import com.example.vtewe.rxjava.rxjavaforandroid.chapt6_fileBrowser.FileBrowserActivity;
 import com.example.vtewe.rxjava.rxjavaforandroid.chapt6_fileBrowser.fb_CoffeeBreak.FB_CoffeeBreak;
 import com.example.vtewe.rxjava.rxjavaforandroid.chapt4_disposables.DisposablesActivity;
@@ -55,6 +56,8 @@ public class MainActivityForRxJava extends AppCompatActivity {
                 .subscribe(event -> startAnActivity(ChatClientActivity.class)));
         compositeDisposable.add(RxView.clicks(findViewById(R.id.chatClientExtended))
                 .subscribe(event -> startAnActivity(ChatClientActivityExtended.class)));
+        compositeDisposable.add(RxView.clicks(findViewById(R.id.fanAnimation))
+                .subscribe(event -> startAnActivity(FanAnimationActivity.class)));
     }
 
     void startAnActivity(Class activityClass){

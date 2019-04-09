@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.example.vtewe.rxjava.rxjavaforandroid.chapt13_fanAnimation.FanView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fan_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/fan_item"/>
+    <include layout="@layout/fan_item"/>
+    <include layout="@layout/fan_item"/>
+    <include layout="@layout/fan_item_header"/>
+
+</com.example.vtewe.rxjava.rxjavaforandroid.chapt13_fanAnimation.FanView>
