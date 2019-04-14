@@ -41,4 +41,25 @@ public class Tile {
     public int getIndexY() {
         return indexY;
     }
+
+    static class Builder{
+        private final Tile tile;
+        private int posY;
+        private int posX;
+
+        public Builder(Tile tile){
+            this.tile = tile;
+        }
+
+        public void screenPosX(int posX){
+            this.posX = posX;
+        }
+        public void screenPosY(int posY){
+            this.posY = posY;
+        }
+        public Tile build(){
+            return new Tile(posX,posY,tile.getWidth(),tile.getHeight(),tile.getIndexX(),tile.getIndexY());
+        }
+    }
 }
+

@@ -1,5 +1,7 @@
 package com.example.vtewe.rxjava.rxjavaforandroid.chapt14_maps;
 
+import android.support.v4.util.Pair;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -9,18 +11,34 @@ import io.reactivex.subjects.BehaviorSubject;
 public class TileViewModel {
 
     private static final String TAG = TileViewModel.class.getSimpleName();
-//    int size = 300;
-//    private Collection<Tile> TEST_TILES = Arrays.asList(
-//            new Tile(0,0,size,size,0,0),
-//            new Tile(size+1,0,size,size,1,0),
-//            new Tile(0,size+1,size,size,0,1),
-//            new Tile(size+1,size+1,size,size,1,1));
+    //dragging subject
+    private BehaviorSubject<PointD> mapOffset = BehaviorSubject.createDefault(new PointD(0f,0f));
+    private BehaviorSubject<Integer> zoomLevel = BehaviorSubject.createDefault(2);
 
-//    private BehaviorSubject<Collection<Tile>> tilesSubject = BehaviorSubject.createDefault(TEST_TILES);
-    private BehaviorSubject<Collection<Tile>> tilesSubject = BehaviorSubject.createDefault(calculateTiles(1));
 
-    public Observable<Collection<Tile>> getTiles(){
-        return tilesSubject.hide();
+    public TileViewModel(Observable<PointD> xyMovementEvents) {
+        calculateUpdates(mapOffset, xyMovementEvents)
+                .subscribe(mapOffset::onNext);
+    }
+
+    public Observable<Collection<Tile>> getTiles() {
+        return Observable.combineLatest(
+                    zoomLevel.map(this::calculateTiles),
+                    mapOffset,
+                    Pair::new)
+                .flatMap(pair ->
+                        Observable.fromIterable(pair.first)
+                            .map(tile -> this.offsetTile(tile, pair.second))
+                            .toList()
+                            .toObservable());
+    }
+
+    private Tile offsetTile(
+            Tile tile, PointD offset) {
+            Tile.Builder builder = new Tile.Builder(tile);
+            builder.screenPosX((int)(tile.getScreenPosX() + offset.x));
+            builder.screenPosY((int)(tile.getScreenPosY() + offset.y));
+            return builder.build();
     }
 
     private Collection<Tile> calculateTiles(int zoomLevel){
@@ -34,12 +52,22 @@ public class TileViewModel {
             yPos = tileSize;
             for(int j = 1; j < gridSize; j++){
                 tiles.add(new Tile(xPos,yPos,tileSize,tileSize,i,j));
-                yPos+=gridSize;
+                yPos+=tileSize;
             }
             xPos+=tileSize;
         }
 
         return tiles;
+    }
+
+    private Observable<PointD> calculateUpdates(Observable<PointD> mapOffset, Observable<PointD> xyMovementEvents) {
+        return xyMovementEvents
+                .withLatestFrom(mapOffset, Pair::new)
+                .map(pair ->
+                    new PointD(
+                        pair.first.x + pair.second.x,
+                        pair.first.y + pair.second.y)
+                );
     }
 
 }
