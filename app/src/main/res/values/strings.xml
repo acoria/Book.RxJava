@@ -15,4 +15,6 @@
         completions."
     </string>
     <string name="title_activity_alert_dialog">AlertDialogActivity</string>
+    <string name="thin">Thin</string>
+    <string name="fat">Fat</string>
 </resources>

@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.example.vtewe.rxjava.R;
+import com.example.vtewe.rxjava.rxjavaforandroid.Paint.PaintActivity;
 import com.example.vtewe.rxjava.rxjavaforandroid.chapt11_chatClient.ChatClientActivity;
 import com.example.vtewe.rxjava.rxjavaforandroid.chapt12_chatClientExtended.ChatClientActivityExtended;
 import com.example.vtewe.rxjava.rxjavaforandroid.chapt13_fanAnimation.FanAnimationActivity;
@@ -61,6 +62,8 @@ public class MainActivityForRxJava extends AppCompatActivity {
                 .subscribe(event -> startAnActivity(FanAnimationActivity.class)));
         compositeDisposable.add(RxView.clicks(findViewById(R.id.map))
                 .subscribe(event -> startAnActivity(MapActivity.class)));
+        compositeDisposable.add(RxView.clicks(findViewById(R.id.paint))
+                .subscribe(event -> startAnActivity(PaintActivity.class)));
     }
 
     void startAnActivity(Class activityClass){

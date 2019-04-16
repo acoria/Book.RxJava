@@ -16,7 +16,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".rxjavaforandroid.chapt14_maps.MapActivity"></activity>
+        <activity android:name=".rxjavaforandroid.Paint.PaintActivity"></activity>
+        <activity android:name=".rxjavaforandroid.chapt14_maps.MapActivity" />
         <activity android:name=".rxjavaforandroid.chapt13_fanAnimation.FanAnimationActivity" />
         <activity android:name=".rxjavaforandroid.chapt12_chatClientExtended.ChatClientActivityExtended" />
         <activity android:name=".rxjavaforandroid.chapt11_chatClient.ChatClientActivity" />
