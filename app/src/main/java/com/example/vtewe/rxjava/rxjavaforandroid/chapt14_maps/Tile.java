@@ -2,6 +2,7 @@ package com.example.vtewe.rxjava.rxjavaforandroid.chapt14_maps;
 
 public class Tile {
 
+    private final int zoom;
     private int screenPosX;
     private int screenPosY;
     private int width;
@@ -9,13 +10,14 @@ public class Tile {
     private int indexX;
     private int indexY;
 
-    public Tile(int screenPosX, int screenPosY, int width, int height, int indexX, int indexY) {
+    public Tile(int screenPosX, int screenPosY, int width, int height, int indexX, int indexY, int zoom) {
         this.screenPosX = screenPosX;
         this.screenPosY = screenPosY;
         this.width = width;
         this.height = height;
         this.indexX = indexX;
         this.indexY = indexY;
+        this.zoom = zoom;
     }
 
     public int getScreenPosX() {
@@ -34,12 +36,19 @@ public class Tile {
         return height;
     }
 
-    public int getIndexX() {
+    private int getIndexX() {
         return indexX;
     }
 
-    public int getIndexY() {
+    private int getIndexY() {
         return indexY;
+    }
+
+    public int tileHashCode() {
+        int hash = zoom;
+        hash = 31 * hash + screenPosX;
+        hash = 31 * hash + screenPosY;
+        return hash;
     }
 
     static class Builder{
@@ -58,8 +67,10 @@ public class Tile {
             this.posY = posY;
         }
         public Tile build(){
-            return new Tile(posX,posY,tile.getWidth(),tile.getHeight(),tile.getIndexX(),tile.getIndexY());
+            return new Tile(posX,posY,tile.getWidth(),tile.getHeight(),tile.getIndexX(),tile.getIndexY(), tile.zoom);
         }
+
     }
+
 }
 

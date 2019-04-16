@@ -28,28 +28,34 @@
         app:layout_constraintStart_toEndOf="@id/button_blue"
         android:backgroundTint="@color/green"/>
     <Button
-        android:id="@+id/button_thin"
-        android:layout_width="60dp"
+        android:id="@+id/button_white"
+        android:layout_width="50dp"
         android:layout_height="50dp"
         app:layout_constraintTop_toTopOf="@id/button_red"
         app:layout_constraintStart_toEndOf="@id/button_green"
+        android:backgroundTint="@color/white"/>
+    <Button
+        android:id="@+id/button_thin"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:layout_constraintTop_toTopOf="@id/button_red"
+        app:layout_constraintStart_toEndOf="@id/button_white"
         android:layout_marginStart="10dp"
-        android:text="@string/thin"/>
+        android:text="-"/>
     <Button
         android:id="@+id/button_fat"
         android:layout_width="50dp"
         android:layout_height="50dp"
         app:layout_constraintTop_toTopOf="@id/button_red"
         app:layout_constraintStart_toEndOf="@id/button_thin"
-        android:text="@string/fat"/>
+        android:text="+"/>
     <ImageButton
         android:id="@+id/button_empty_canvas"
-        android:layout_width="0dp"
+        android:layout_width="50dp"
         android:layout_height="50dp"
         android:src="@drawable/ic_close_black"
         app:layout_constraintTop_toTopOf="@id/button_red"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/button_fat"
         android:layout_marginStart="10dp"/>
     <com.example.vtewe.rxjava.rxjavaforandroid.Paint.CanvasPaintingView
         android:id="@+id/paint_view"

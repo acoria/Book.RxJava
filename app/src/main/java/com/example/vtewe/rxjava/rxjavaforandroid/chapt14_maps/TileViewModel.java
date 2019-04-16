@@ -11,9 +11,9 @@ import io.reactivex.subjects.BehaviorSubject;
 public class TileViewModel {
 
     private static final String TAG = TileViewModel.class.getSimpleName();
+    private int tileSize = 256;
     //dragging subject
     private BehaviorSubject<PointD> mapOffset = BehaviorSubject.createDefault(new PointD(0f,0f));
-    private BehaviorSubject<Integer> zoomLevel = BehaviorSubject.createDefault(2);
 
 
     public TileViewModel(Observable<PointD> xyMovementEvents) {
@@ -21,9 +21,10 @@ public class TileViewModel {
                 .subscribe(mapOffset::onNext);
     }
 
-    public Observable<Collection<Tile>> getTiles() {
+    public Observable<Collection<Tile>> getTiles(Observable<Integer> zoomLevel, Observable<PointD> tilesViewSize) {
         return Observable.combineLatest(
-                    zoomLevel.map(this::calculateTiles),
+                    zoomLevel
+                        .withLatestFrom(tilesViewSize, (zoom, viewSize) -> calculateTiles(zoom, viewSize)),
                     mapOffset,
                     Pair::new)
                 .flatMap(pair ->
@@ -41,22 +42,42 @@ public class TileViewModel {
             return builder.build();
     }
 
-    private Collection<Tile> calculateTiles(int zoomLevel){
-                Collection<Tile> tiles = new ArrayList<>();
-        int tileSize = 256;
-        int xPos = 0, yPos;
-        int gridSize = (int) Math.pow(2,zoomLevel);
+    private Collection<Tile> calculateTiles(int zoomLevel, PointD viewSize){
+        PointD offset = mapOffset.getValue();
 
-        for(int i = 0; i < gridSize; i++){
-            tiles.add(new Tile(xPos,0,tileSize,tileSize,i,0));
+        final int firstTileX = (int) Math.floor(-offset.x / tileSize);
+        final int firstTileY = (int) Math.floor(-offset.y / tileSize);
+        final int lastTileX = (int) Math.ceil((-offset.x + viewSize.x) / tileSize);
+        final int lastTileY = (int) Math.ceil((-offset.y + viewSize.y) / tileSize);
+
+        final int left = Math.max(0, firstTileX);
+        final int right = Math.min(1 << zoomLevel, lastTileX);
+        final int top = Math.max(0, firstTileY);
+        final int bottom = Math.min(1 << zoomLevel, lastTileY);
+
+
+        Collection<Tile> tiles = new ArrayList<>();
+        int xPos = 0, yPos;
+//        int gridSize = (int) Math.pow(2,zoomLevel);
+
+        for(int i = left; i < right; i++){
+            tiles.add(new Tile(xPos,0,tileSize,tileSize,i,0, zoomLevel));
             yPos = tileSize;
-            for(int j = 1; j < gridSize; j++){
-                tiles.add(new Tile(xPos,yPos,tileSize,tileSize,i,j));
+            for(int j = top+1; j < bottom; j++){
+                tiles.add(new Tile(xPos,yPos,tileSize,tileSize,i,j, zoomLevel));
                 yPos+=tileSize;
             }
             xPos+=tileSize;
         }
-
+//        for(int i = 0; i < gridSize; i++){
+//            tiles.add(new Tile(xPos,0,tileSize,tileSize,i,0, zoomLevel));
+//            yPos = tileSize;
+//            for(int j = 1; j < gridSize; j++){
+//                tiles.add(new Tile(xPos,yPos,tileSize,tileSize,i,j, zoomLevel));
+//                yPos+=tileSize;
+//            }
+//            xPos+=tileSize;
+//        }
         return tiles;
     }
 
