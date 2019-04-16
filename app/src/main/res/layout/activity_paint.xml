@@ -49,14 +49,14 @@
         app:layout_constraintTop_toTopOf="@id/button_red"
         app:layout_constraintStart_toEndOf="@id/button_thin"
         android:text="+"/>
-    <ImageButton
+    <Button
         android:id="@+id/button_empty_canvas"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@drawable/ic_close_black"
         app:layout_constraintTop_toTopOf="@id/button_red"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginStart="10dp"/>
+        android:layout_marginStart="10dp"
+        android:text="X"/>
     <com.example.vtewe.rxjava.rxjavaforandroid.Paint.CanvasPaintingView
         android:id="@+id/paint_view"
         android:layout_width="match_parent"

@@ -19,7 +19,7 @@ public class PaintActivity extends AppCompatActivity {
 
     CanvasPaintingView paintingView;
     BehaviorSubject<Integer> colorSubject;
-    BehaviorSubject<Float> thicknessSubject = BehaviorSubject.createDefault(20f);
+    BehaviorSubject<Float> thicknessSubject = BehaviorSubject.createDefault(15f);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +46,11 @@ public class PaintActivity extends AppCompatActivity {
         RxView.clicks(findViewById(R.id.button_white))
                 .subscribe(click -> colorSubject.onNext(getResources().getColor(R.color.white)));
         RxView.clicks(findViewById(R.id.button_thin))
-                .subscribe(click -> thicknessSubject.onNext(20f));
+                .subscribe(click -> {
+                    if(thicknessSubject.getValue() > 15f){thicknessSubject.onNext(thicknessSubject.getValue() - 15f);}
+                });
         RxView.clicks(findViewById(R.id.button_fat))
-                .subscribe(click -> thicknessSubject.onNext(50f));
+                .subscribe(click -> thicknessSubject.onNext(thicknessSubject.getValue() + 15f));
         RxView.clicks(findViewById(R.id.button_empty_canvas))
                 .subscribe(click -> viewModel.resetPaths());
     }
