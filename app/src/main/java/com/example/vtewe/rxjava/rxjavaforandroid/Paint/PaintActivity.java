@@ -10,6 +10,10 @@ import android.view.MotionEvent;
 import com.example.vtewe.rxjava.R;
 import com.jakewharton.rxbinding2.view.RxView;
 
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.Enumeration;
 import java.util.List;
 
 import io.reactivex.subjects.BehaviorSubject;
@@ -26,6 +30,22 @@ public class PaintActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setTitle("The Canvas is your Oyster");
         setContentView(R.layout.activity_paint);
+
+
+        //test
+        try {
+            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
+                NetworkInterface intf = en.nextElement();
+                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
+                    InetAddress inetAddress = enumIpAddr.nextElement();
+                    if (!inetAddress.isLoopbackAddress()) {
+                        String ip = inetAddress.getHostAddress().toString();
+                    }
+                }
+            }
+        } catch (SocketException ex) {
+//            Log.e(LOG_TAG, ex.toString());
+        }
 
         colorSubject = BehaviorSubject.createDefault(getResources().getColor(R.color.red));
         paintingView = findViewById(R.id.paint_view);
